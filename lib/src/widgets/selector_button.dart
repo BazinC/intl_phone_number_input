@@ -58,6 +58,11 @@ class SelectorButton extends StatelessWidget {
                 textStyle: selectorTextStyle,
               )
         : MaterialButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(12.0),
+              ),
+            ),
             key: Key(TestHelper.DropdownButtonKeyValue),
             padding: EdgeInsets.zero,
             minWidth: 0,
@@ -79,7 +84,12 @@ class SelectorButton extends StatelessWidget {
                   }
                 : null,
             child: Padding(
-              padding: const EdgeInsets.only(right: 0.0),
+              padding: const EdgeInsets.only(
+                left: 12,
+                top: 12,
+                bottom: 12,
+                // right: 12,
+              ),
               child: Item(
                 country: country,
                 showFlag: selectorConfig.showFlags,

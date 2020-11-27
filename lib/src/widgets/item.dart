@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:intl_phone_number_input/src/models/country_model.dart';
 import 'package:intl_phone_number_input/src/utils/util.dart';
 
@@ -20,8 +21,14 @@ class Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = InternationalPhoneNumberInputTheme.of(context);
     return Container(
-      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+          border: Border(
+              right: BorderSide(
+        color: theme.strokeLineColor,
+        width: 1,
+      ))),
       child: Row(
         textDirection: TextDirection.ltr,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -31,7 +38,7 @@ class Item extends StatelessWidget {
             showFlag: showFlag,
             useEmoji: useEmoji,
           ),
-          // SizedBox(width: 12.0),
+          SizedBox(width: 12.0),
           // Text(
           //   '${(country?.dialCode ?? '').padRight(5, "   ")}',
           //   textDirection: TextDirection.ltr,
@@ -61,13 +68,31 @@ class _Flag extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline5,
                   )
                 : country?.flagUri != null
-                    ? Image.asset(
-                        country?.flagUri,
-                        width: 32.0,
-                        package: 'intl_phone_number_input',
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4.0),
+                        ),
+                        child: Image.asset(
+                          country?.flagUri,
+                          width: 36.0,
+                          package: 'intl_phone_number_input',
+                        ),
                       )
                     : SizedBox.shrink(),
           )
         : SizedBox.shrink();
+  }
+}
+
+class CustomFlagClipper extends CustomClipper<Rect> {
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromLTWH(4, 4, size.width - 8, size.height - 8);
+    return Rect.fromLTWH(4, 4, size.width - 8, size.height - 8);
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Rect> oldClipper) {
+    return false;
   }
 }

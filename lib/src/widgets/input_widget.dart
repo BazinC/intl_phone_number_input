@@ -57,23 +57,6 @@ class InternationalPhoneNumberInputTheme extends InheritedWidget {
   }
 }
 
-// class InternationalPhoneNumberInput extends StatelessWidget {
-//   final InternationalPhoneNumberInputThemeData theme;
-//   const InternationalPhoneNumberInput({
-//     Key key,
-//     this.theme,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final theme = this.theme ?? InternationalPhoneNumberInputTheme.of(context);
-//     return InternationalPhoneNumberInputTheme(
-//       data: theme,
-//       child: Container(),
-//     );
-//   }
-// }
-
 /// Enum for [SelectorButton] types.
 ///
 /// Available type includes:
@@ -382,19 +365,17 @@ class _InputWidgetView
     final dialCode = state?.country?.dialCode ?? '';
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12.0,
+      padding: const EdgeInsets.only(
+        right: 12.0,
       ),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(12.0),
         ),
         border: Border.all(
-          // color: theme.color.lineLight,
           color: theme.strokeLineColor,
           width: 1.0,
         ),
-        // color: theme.color.smallCardsOrInsetOrInput,
         color: theme.backgroundColor,
       ),
       child: Row(

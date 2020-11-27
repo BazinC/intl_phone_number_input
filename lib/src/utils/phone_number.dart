@@ -99,7 +99,9 @@ class PhoneNumber extends Equatable {
 
   /// Returns a String of [phoneNumber] without [dialCode]
   String parseNumber() {
-    return this.phoneNumber.replaceAll("${this.dialCode}", '');
+    return this.phoneNumber != null
+        ? this.phoneNumber?.replaceAll("${this.dialCode}", '')
+        : '';
   }
 
   /// For predefined phone number returns Country's [isoCode] from the dial code,
