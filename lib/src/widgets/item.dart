@@ -21,6 +21,7 @@ class Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(12),
       child: Row(
         textDirection: TextDirection.ltr,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -30,12 +31,12 @@ class Item extends StatelessWidget {
             showFlag: showFlag,
             useEmoji: useEmoji,
           ),
-          SizedBox(width: 12.0),
-          Text(
-            '${(country?.dialCode ?? '').padRight(5, "   ")}',
-            textDirection: TextDirection.ltr,
-            style: textStyle,
-          ),
+          // SizedBox(width: 12.0),
+          // Text(
+          //   '${(country?.dialCode ?? '').padRight(5, "   ")}',
+          //   textDirection: TextDirection.ltr,
+          //   style: textStyle,
+          // ),
         ],
       ),
     );

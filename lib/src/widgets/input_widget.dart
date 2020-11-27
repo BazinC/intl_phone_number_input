@@ -11,6 +11,68 @@ import 'package:intl_phone_number_input/src/utils/util.dart';
 import 'package:intl_phone_number_input/src/utils/widget_view.dart';
 import 'package:intl_phone_number_input/src/widgets/selector_button.dart';
 import 'package:libphonenumber/libphonenumber.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'input_widget.freezed.dart';
+
+@freezed
+abstract class InternationalPhoneNumberInputThemeData
+    with _$InternationalPhoneNumberInputThemeData {
+  const factory InternationalPhoneNumberInputThemeData({
+    Color backgroundColor,
+    Color strokeLineColor,
+  }) = _InternationalPhoneNumberInputThemeData;
+
+  factory InternationalPhoneNumberInputThemeData.fallback(
+      BuildContext context) {
+    return InternationalPhoneNumberInputThemeData(
+      backgroundColor: Colors.black12,
+      strokeLineColor: Colors.black,
+    );
+  }
+}
+
+class InternationalPhoneNumberInputTheme extends InheritedWidget {
+  final InternationalPhoneNumberInputThemeData data;
+  const InternationalPhoneNumberInputTheme({
+    Key key,
+    @required Widget child,
+    @required this.data,
+  })  : assert(data != null),
+        super(
+          key: key,
+          child: child,
+        );
+
+  static InternationalPhoneNumberInputThemeData of(BuildContext context) {
+    var result = context.dependOnInheritedWidgetOfExactType<
+        InternationalPhoneNumberInputTheme>();
+    return result?.data ??
+        InternationalPhoneNumberInputThemeData.fallback(context);
+  }
+
+  @override
+  bool updateShouldNotify(InternationalPhoneNumberInputTheme oldWidget) {
+    return data != oldWidget.data;
+  }
+}
+
+// class InternationalPhoneNumberInput extends StatelessWidget {
+//   final InternationalPhoneNumberInputThemeData theme;
+//   const InternationalPhoneNumberInput({
+//     Key key,
+//     this.theme,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = this.theme ?? InternationalPhoneNumberInputTheme.of(context);
+//     return InternationalPhoneNumberInputTheme(
+//       data: theme,
+//       child: Container(),
+//     );
+//   }
+// }
 
 /// Enum for [SelectorButton] types.
 ///
@@ -34,6 +96,8 @@ enum PhoneInputSelectorType { DROPDOWN, BOTTOM_SHEET, DIALOG }
 /// [countries] accepts list of string on Country isoCode, if specified filters
 /// available countries to match the [countries] specified.
 class InternationalPhoneNumberInput extends StatefulWidget {
+  final InternationalPhoneNumberInputThemeData theme;
+
   final SelectorConfig selectorConfig;
 
   final ValueChanged<PhoneNumber> onInputChanged;
@@ -104,7 +168,8 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.inputDecoration,
       this.searchBoxDecoration,
       this.focusNode,
-      this.countries})
+      this.countries,
+      this.theme})
       : super(key: key);
 
   @override
@@ -136,8 +201,14 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
 
   @override
   Widget build(BuildContext context) {
-    return _InputWidgetView(
-      state: this,
+    final theme =
+        widget.theme ?? InternationalPhoneNumberInputTheme.of(context);
+
+    return InternationalPhoneNumberInputTheme(
+      data: theme,
+      child: _InputWidgetView(
+        state: this,
+      ),
     );
   }
 
@@ -275,8 +346,8 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (isValid && widget.errorMessage != null) {
         setState(() {
-          this.selectorButtonBottomPadding =
-              widget.selectorButtonOnErrorPadding ?? 24;
+          // this.selectorButtonBottomPadding =
+          //     widget.selectorButtonOnErrorPadding ?? 24;
         });
       } else {
         setState(() {
@@ -306,10 +377,26 @@ class _InputWidgetView
 
   @override
   Widget build(BuildContext context) {
+    final theme = InternationalPhoneNumberInputTheme.of(context);
     final countryCode = state?.country?.alpha2Code ?? '';
     final dialCode = state?.country?.dialCode ?? '';
 
     return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12.0,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(12.0),
+        ),
+        border: Border.all(
+          // color: theme.color.lineLight,
+          color: theme.strokeLineColor,
+          width: 1.0,
+        ),
+        // color: theme.color.smallCardsOrInsetOrInput,
+        color: theme.backgroundColor,
+      ),
       child: Row(
         textDirection: TextDirection.ltr,
         mainAxisAlignment: MainAxisAlignment.start,
