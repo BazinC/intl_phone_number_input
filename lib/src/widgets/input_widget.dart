@@ -213,8 +213,14 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
           await PhoneNumberUtil.isValidPhoneNumber(
               phoneNumber: widget.initialValue.phoneNumber,
               isoCode: widget.initialValue.isoCode)) {
-        controller.text =
-            await PhoneNumber.getParsableNumber(widget.initialValue);
+        final initialString =
+            await PhoneNumber.getParsableNumber(widget.initialValue) ?? '';
+        controller.value = TextEditingValue(
+          text: initialString,
+          selection: TextSelection.fromPosition(
+            TextPosition(offset: initialString.length),
+          ),
+        );
 
         phoneNumberControllerListener();
       }
